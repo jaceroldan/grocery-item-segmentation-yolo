@@ -1,7 +1,7 @@
 train: /data/students/juan/train/grocery-item-segmentation-yolo/dataset/images/train
 val: /data/students/juan/train/grocery-item-segmentation-yolo/dataset/images/val
 nc: 24
-names: ['bottled_soda', 'cheese', 'Kitkat', 'coffee', 'condensed_milk', 'Cooking_oil', 'corned beef', 'garlic', 'instant_noodles', 'Ketchup', 'lemon', 'All Purpose Cream', 'Mayonnaise', 'peanut_butter', 'pasta', 'pineapple juice', 'crackers', '18', 'pink_shampoo', '20', 'silverswan', 'toothpaste', 'canned-tuna', 'GreenCross Ethyl Alcohol']
+names: ['Bottled Soda', 'Cheese', 'Kitkat', 'Coffee', 'Condensed Milk', 'Cooking Oil', 'Corned Beef', 'Garlic', 'Instant Noodles', 'Ketchup', 'Lemon', 'All-Purpose Cream', 'Mayonnaise', 'Peanut Butter', 'Pasta', 'Pineapple Juice', 'Crackers', 'Sardines', 'Pink Shampoo', 'Dove Soap', 'Silver Swan', 'Toothpaste', 'Canned Tuna', 'GreenCross Ethyl Alcohol']
 augmentation:
   mosaic: 0.5
   hsv_h: 0.015
