@@ -163,5 +163,7 @@ cython_debug/
 
 dataset/
 .gradio/
+dataset_sim/
+output_visualizations/
 runs/
 *.pt
