@@ -1,37 +1,73 @@
+import gradio as gr
+import asyncio
+import time
 import cv2
 from ultralytics import YOLO
-from fastapi import FastAPI, File, UploadFile
-from starlette.responses import StreamingResponse
 import numpy as np
-import io
+import os
 
-app = FastAPI()
-model = YOLO('runs/segment/train/weights/best.pt')  # Load your trained segmentation model
+# Ensure cache directories exist
+os.environ["GRADIO_TEMP_DIR"] = "./gradio_cache"
+os.environ["GRADIO_CACHE_DIR"] = "./gradio_cache"
+os.makedirs("./gradio_cache", exist_ok=True)
 
-@app.post("/process_frame")
-async def process_frame(file: UploadFile = File(...)):
-    # Read the uploaded frame
-    image_bytes = await file.read()
-    nparr = np.frombuffer(image_bytes, np.uint8)
-    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    
-    # Perform inference
-    results = model(frame)
+# Load the YOLO model
+model = YOLO('runs/segment/train9/weights/best.pt')
+
+async def process_frame_webcam(input_image):
+    # Flip the input image horizontally (mirroring for webcam)
+    input_image = cv2.flip(input_image, 1)
+
+    # Convert the input image from BGR to RGB for the YOLO model
+    input_image = cv2.cvtColor(input_image, cv2.COLOR_BGR2RGB)
+
+    # Run YOLO model on the frame
+    results = model(input_image)
 
     # Check if `results` is a list, take the first element if so
-    if isinstance(results, list):
-        result = results[0]
-    else:
-        result = results
+    result = results[0] if isinstance(results, list) else results
 
     # Render the segmentation result on the frame
-    segmented_frame = result.plot()  # `plot()` is the method to overlay results on the image
+    segmented_frame = result.plot()  # `plot()` overlays results on the image
 
+    return segmented_frame  # Return the NumPy array
 
-    # Encode the segmented frame for sending back
-    _, buffer = cv2.imencode('.jpg', segmented_frame)
-    return StreamingResponse(io.BytesIO(buffer.tobytes()), media_type="image/jpeg")
+def gradio_infer(input_image):
+    start_time = time.time()
+
+    # Process the input frame using asyncio.run for async function
+    segmented_frame = asyncio.run(process_frame_webcam(input_image))
+
+    # Convert the segmented frame to RGB for Gradio display
+    segmented_frame = cv2.cvtColor(segmented_frame, cv2.COLOR_BGR2RGB)
+
+    # Calculate FPS
+    fps = 1 / (time.time() - start_time) / 10
+
+    # Display FPS on the frame
+    height, width, _ = segmented_frame.shape
+    cv2.putText(
+        segmented_frame,
+        f"FPS: {fps:.2f}",
+        (10, height - 10),  # Position FPS text at the bottom-left
+        cv2.FONT_HERSHEY_SIMPLEX,
+        1,
+        (0, 255, 0),
+        2,
+        cv2.LINE_AA,
+    )
+
+    return segmented_frame
+
+# Define Gradio interface
+webcam_interface = gr.Interface(
+    fn=gradio_infer,
+    inputs=gr.Image(label="input", sources="webcam", streaming=True),
+    outputs=gr.Image(),
+    live=True,
+    title="Real-Time Grocery Segmentation",
+    description="A YOLO-based model for grocery segmentation using your webcam."
+)
 
 if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=5678)
+    webcam_interface.launch(share=True)
