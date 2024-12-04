@@ -1,0 +1,16 @@
+train: /data/students/juan/train/grocery-item-segmentation-yolo/dataset_v3/images/train
+val: /data/students/juan/train/grocery-item-segmentation-yolo/dataset/images/val
+nc: 24
+names: ['Bottled Soda', 'Cheese', 'Kitkat', 'Coffee', 'Condensed Milk', 'Cooking Oil', 'Corned Beef', 'Garlic', 'Instant Noodles', 'Ketchup', 'Lemon', 'All-Purpose Cream', 'Mayonnaise', 'Peanut Butter', 'Pasta', 'Pineapple Juice', 'Crackers', 'Sardines', 'Pink Shampoo', 'Dove Soap', 'Silver Swan', 'Toothpaste', 'Canned Tuna', 'GreenCross Ethyl Alcohol']
+augmentation:
+  mosaic: 0.5
+  hsv_h: 0.015
+  hsv_s: 0.7
+  hsv_v: 0.4
+  degrees: 0.373
+  translate: 0.45
+  scale: 0.5
+  shear: 0.3
+  flipud: 0.01
+  fliplr: 0.5
+  blur: 0.1
