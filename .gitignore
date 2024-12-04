@@ -162,6 +162,7 @@ cython_debug/
 #.idea/
 
 dataset/
+dataset_v3/
 .gradio/
 dataset_sim/
 output_visualizations/
