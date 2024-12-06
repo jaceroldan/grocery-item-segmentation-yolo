@@ -163,6 +163,7 @@ cython_debug/
 
 dataset/
 dataset_v3/
+dataset_v4/
 .gradio/
 dataset_sim/
 output_visualizations/
