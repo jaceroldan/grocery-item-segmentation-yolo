@@ -53,7 +53,7 @@ webcam_interface = gr.Interface(
     live=True,
     title="Real-Time Grocery Segmentation",
     description="A YOLO-based model for grocery segmentation using your webcam.",
-    stream_every=0.075,
+    stream_every=0.6,
 )
 
 if __name__ == "__main__":
