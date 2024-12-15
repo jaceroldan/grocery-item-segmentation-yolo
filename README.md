@@ -12,3 +12,7 @@ An experiment to train a model to detect Filipino grocery items using YOLO.
 | 7   | 0.951 | 0.918 | 0.938 | Run6 with CosLR 0.01 to 0.001                                                                                                       |
 | 8   | 0.964 | 0.933 | 0.948 | Run6 with 20 epochs                                                                                                                 |
 | 9   | 0.964 | 0.958 | 0.974 | Run6 with 30 epochs                                                                                                                 |
+
+# Training runs
+
+Training runs and weights can be found in this [Google Drive](https://drive.google.com/drive/folders/1_awr49-evoKf2umHpMZX-DZkjJaTCUfU?usp=sharing) (Request for access from owner). 
